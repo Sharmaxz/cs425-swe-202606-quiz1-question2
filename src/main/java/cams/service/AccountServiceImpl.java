@@ -12,11 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class AccountServiceImpl implements AccountService {
-
     private final AccountRepository accountRepository;
-    
-    // We use the specified date 2026-06-04 to calculate tiers accurately
-    private final LocalDate evaluationDate = LocalDate.of(2026, 6, 4);
 
     public AccountServiceImpl(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
@@ -24,18 +20,22 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public List<AccountResponse> getAllAccountsSortedByBalanceDesc() {
+        LocalDate evaluationDate = LocalDate.now();
+
         return accountRepository.findAll().stream()
                 .sorted(Comparator.comparing(Account::getBalance).reversed())
-                .map(acc -> new AccountResponse(acc, acc.getTier(evaluationDate)))
+                .map(account -> new AccountResponse(account, account.getTier(evaluationDate)))
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<AccountResponse> getPlatinumAccounts() {
+        LocalDate evaluationDate = LocalDate.now();
+
         return accountRepository.findAll().stream()
-                .filter(acc -> acc.getTier(evaluationDate) == AccountTier.PLATINUM)
+                .filter(account -> account.getTier(evaluationDate) == AccountTier.PLATINUM)
                 .sorted(Comparator.comparing(Account::getBalance).reversed())
-                .map(acc -> new AccountResponse(acc, AccountTier.PLATINUM))
+                .map(account -> new AccountResponse(account, account.getTier(evaluationDate)))
                 .collect(Collectors.toList());
     }
 
