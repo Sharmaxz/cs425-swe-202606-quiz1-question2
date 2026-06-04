@@ -28,4 +28,4 @@ java -jar target/camsapp.jar
 3. Displays a list of only Platinum tier Accounts in JSON format, sorted in descending order of the Account balance.
 
 ## CI/CD
-This project is configured with GitHub Actions. On every push to the `main` or `master` branch, the Maven build is automatically executed.
+This project is configured with GitHub Actions. On every push to the `main` branch, the Maven build is automatically executed.
